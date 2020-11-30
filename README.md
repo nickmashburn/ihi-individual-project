@@ -2,8 +2,8 @@
 
 Want to give this a try on your own?
 
-1. Clone the Github repository provided into a new repository. 
-2. Navigate to “Settings” in the Repository. 
+1. Clone this Github repository into a new public repository. 
+2. Navigate to “Settings” in the new repository. 
 3. Scroll down to the GitHub Pages section of the page.
 4. Select “main” or "master" in the Branch dropdown under Source, root in the folder dropdown, and click “Save”.
 5. Copy the URL provided after clicking Save to your clipboard. 
