@@ -14,7 +14,7 @@ If you have a problem with the link provided above, you can use these steps to d
 6. Navigate to the SMART App Launcher (a sandbox environment)        https://launch.smarthealthit.org/?auth_error=&fhir_version_1=r4&fhir_version_2=r4&iss=&launch_ehr=1&launch_url=&patient=&prov_skip_auth=1&provider=&pt_skip_auth=1&public_key=&sb=&sde=&sim_ehr=1&token_lifetime=15&user_pt=
 7. Below “Launch Type” (top left of the page) select “Provider EHR Launch”
 8. Select the checkbox that appears next to “Simulate launch within the EHR user interface” directly below the Provider EHR Launch checkbox. 
-9. Enter this Patient ID in the Patient(s) box roughly halfway down the page. This provides a direct link to a Patient record that is confirmed to have A1c Observations. F3159bbe-e6af-4b36-b91a-3ab69e3bcae9
+9. Enter this Patient ID in the Patient(s) box roughly halfway down the page. This provides a direct link to a Patient record that is confirmed to have A1c Observations. f3159bbe-e6af-4b36-b91a-3ab69e3bcae9
 10. Select “R3 (STU3)” in the FHIR Version dropdown on the top right of the page. 
 11. In the App Launch URL field on the bottom of the page, enter the link copied from Step 5. Append “launch.html” to the end of it. 
 12. Click “Launch App!”. You will now be able to use the app as outlined in this paper. 
