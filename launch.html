@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+    <script src="fhir-client.js"></script>
+  
+    <script>
+      FHIR.oauth2.authorize({
+        client: {
+          "client_id": "diabetic-dashboard",
+          "scope"    : "patient/Observation.read patient/Patient.read launch/patient"
+        },
+      });
+    </script>
+  
+  </head>
+  <body>
+    <h1>Loading...</h1>
+  </body>
+</html>
+
+
+
+

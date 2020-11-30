@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <style>
+    .float-main {
+      padding: 20px;
+    }
+
+    .float-sub {
+      width: 40%;
+      float: left;
+      padding: 10px;
+      border: 1px black;
+    }
+  
+  </style>
+    
+  <title>A1C History</title>
+   <script src="fhir-client.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
+    
+    <h1 id="status">Looking for HbA1C Observations...</h1>
+
+    <div class = "float-main">
+    
+        <div class = "float-sub">
+            <div>
+                <h2>Helping your Diabetic Patient understand their A1c</h2>
+                <p>Hemoglobin A1c, or HbA1c, is an incredibly important number for Diabetic patients, but it can also be confusing and potentially discouraging when patients have difficulty improving their A1c. Here are some resources you and your patient may find helpful.&nbsp;</p>
+                <p><strong>Physical Health:</strong></p>
+                <ul>
+                <li><a href="https://www.healthline.com/nutrition/15-ways-to-lower-blood-sugar">Controlling your Blood Glucose</a> - Blood glucose values are the primary contributor to your A1c, so getting them under control will help improve your A1c, too!</li>
+                <li><a href="https://www.mayoclinic.org/diseases-conditions/diabetes/in-depth/diabetes-diet/art-20044295">The importance of a healthy diet</a> - The first step towards a better A1c is improving your diet. Use these resources to figure out the right first step towards using your diet to improve your A1c.</li>
+                <li><a href="https://www.webmd.com/diabetes/ss/slideshow-exercises-diabetes">How can exercise help me with my Diabetes?</a> Exercise, especially when paired with a healthy diet, can make a world of difference when it comes to improving your A1c. Exercising as a diabetic means you have other things to consider, like the amount of insulin you have "on board" or when the last time you ate was. Use this resource to help you understand what exercising means for a diabetic.&nbsp;</li>
+                </ul>
+                <p><strong>Mental Health &amp; Wellbeing:</strong></p>
+                <ul>
+                <li><a href="https://www.cdc.gov/diabetes/managing/mental-health.html">What the CDC says about Diabetes and Mental Health</a> - Diabetics are 20% more likely to experience anxiety at some point in their lives, as well as other mental health conditions like depression. Use this article as a resource for understanding mental health considerations as a Diabetic.&nbsp;</li>
+                <li><a href="https://www.diabetes.org/community/join">Join the Diabetes.org Community!</a> Here you can share your story with other diabetics, exchange tips and tricks for managing your condition, and support other diabetics in need of help.</li>
+                </ul>
+                <p>Have a concern about your mental health and wellbeing? Use <a href="https://professional.diabetes.org/mhp_listing">this tool</a> provided by the ADA to search for a qualified mental health provider and get the help you need.&nbsp;</p>
+            </div>
+          </div>
+          
+          <div class="float-sub">
+              <div id="a1c-chart" style="width:700px;height:600px;"></div>
+            </div>
+
+    </div>
+    <script>
+      
+      
+      FHIR.oauth2.ready( getHbA1cdata, showError );
+      
+      var statusDiv =  document.getElementById("status");
+      var a1cChartDiv = document.getElementById("a1c-chart");
+
+      function getHbA1cdata(smart) {
+        
+        smart.patient.api.search({
+          type: "Observation", 
+          query: {
+            code: "4548-4", 
+            "_sort:desc": "date", 
+            _count: 15
+          }
+          
+        }).then( function(fhirObservations) {
+
+          var dates = [];
+          var values = [];            
+          
+          (fhirObservations.data.entry || []).forEach( function(hba1c) {
+            var date = hba1c.resource.effectiveDateTime;
+            var value = hba1c.resource.valueQuantity && hba1c.resource.valueQuantity.value;
+            if (date && value && dates.indexOf(date) == -1) {
+              dates.push(date);
+              values.push(Math.round(value*10)/10);
+            };
+          });
+          
+          if (values.length === 0)
+            return statusDiv.innerHTML = "No A1c Labs found.";
+          
+          statusDiv.style.display = "none";
+
+          Plotly.newPlot(a1cChartDiv, {
+            data: [{
+              x: dates,
+              y: values,
+              type: "scatter"
+            }],
+            layout: {
+              title: "Your Patient's A1C (HbA1c) Labs",
+              xaxis: {type: "date", tickformat: "%b %y"},
+              yaxis: {range: [0, 10]}
+            },
+            config: {
+              displayModeBar: false
+            }
+          });          
+        });
+        
+      }
+      
+      function showError(error) {
+        return statusDiv.innerHTML = "An error occurred connecting to the EHR";
+      }
+    </script>
+
+  </body>
+</html>
+
+
